@@ -30,7 +30,7 @@ cd docker
 bash generate_env.bash
 
 # build docker container
-docker compose build
+docker-compose build
 
 # launch container
 docker compose up
