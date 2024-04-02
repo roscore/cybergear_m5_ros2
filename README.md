@@ -181,4 +181,35 @@ RuntimeError: Signal event received before subprocess transport available.
 
 ```
 
+## Test
+```
+<?xml version='1.0'?>
+<launch>
+  <arg name="serial_port" default="/dev/ttyACM0"/>
+  <arg name="baudrate" default="2000000"/>
+  <arg name="frame_id" default="body"/>
+  <arg name="rate" default="200.0"/>
+  <arg name="enable_on_start" default="true"/>
+  <arg name="disable_on_end" default="true"/>
+
+  <!-- Launch cybergear m5 driver with updated tags for ROS2 Humble -->
+  <executable name="cybergear_m5_bridge_node" pkg="cybergear_m5_driver" output="screen">
+    <parameter name="serial_port" value="$(var serial_port)"/>
+    <parameter name="baudrate" value="$(var baudrate)"/>
+    <parameter name="frame_id" value="$(var frame_id)"/>
+    <parameter name="rate" value="$(var rate)"/>
+    <parameter name="enable_on_start" value="$(var enable_on_start)"/>
+    <parameter name="disable_on_end" value="$(var disable_on_end)"/>
+    <parameter from="$(find-pkg-share cybergear_m5_bringup)/config/1dof_position_sample.yaml"/>
+  </executable>
+
+  <!-- Launch rviz for visualization with updated tags -->
+  <include file="$(find-pkg-share cybergear_description)/launch/display_1dof.launch.xml">
+    <arg name="use_gui" value="true"/>
+    <arg name="joint_states_name" value="joint_command"/>
+  </include>
+</launch>
+
+```
+
 * [cybergear_m5](https://github.com/project-sternbergia/cybergear_m5)
